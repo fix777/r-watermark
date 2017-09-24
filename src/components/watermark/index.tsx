@@ -123,6 +123,9 @@ export class Watermark extends Component<WatermarkProps, WatermarkState> {
       <div
         style={{
           position: "relative",
+          width: "100%",
+          height: "100%",
+          zIndex: 0,
         }}
       >
         {children}
