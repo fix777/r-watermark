@@ -6,7 +6,7 @@ import registerServiceWorker from "./registerServiceWorker";
 
 ReactDOM.render(
   <App>
-    <h3>Hello App</h3>
+    <button onClick={console.log}>Hello App</button>
   </App>,
   document.getElementById("root")
 );

@@ -25,7 +25,7 @@ export class Watermark extends Component<WatermarkProps, WatermarkState> {
   static defaultProps: Partial<WatermarkProps> = {
     width: 180,
     height: 80,
-    zIndex: 9999,
+    zIndex: -1,
     opacity: 0.15,
     texts: [],
   };
@@ -101,7 +101,7 @@ export class Watermark extends Component<WatermarkProps, WatermarkState> {
   }
 
   render() {
-    const { zIndex, opacity } = this.props;
+    const { zIndex, opacity, children } = this.props;
     const { bgImageUrl } = this.state;
 
     let styles: Partial<CSSProperties> = {
@@ -119,21 +119,29 @@ export class Watermark extends Component<WatermarkProps, WatermarkState> {
       styles = { ...styles, backgroundImage: `url(${bgImageUrl})` };
     }
 
-    return <div style={styles} />;
+    return (
+      <div
+        style={{
+          position: "relative",
+        }}
+      >
+        {children}
+        <div style={styles} />
+      </div>
+    );
   }
 }
 
 export const wrapWatermark = (WrappedComponent: JSX.Element) => (
   options: WatermarkProps
 ) => (props: any) => {
-  const { style, children } = WrappedComponent.props;
-  const newStyle = { ...style, ...props.style, position: "relative" };
-  const c = cloneElement(
-    WrappedComponent,
-    { ...props, style: newStyle },
+  const { children } = WrappedComponent.props;
+  const w = cloneElement(
+    <Watermark {...options} />,
+    null,
     children,
-    props.children,
-    <Watermark {...options} />
+    props.children
   );
+  const c = cloneElement(WrappedComponent, props, w);
   return c;
 };

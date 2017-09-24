@@ -17,6 +17,7 @@ $ yarn add r-watermark
 ## Demo
 To run the demo on your local server, please do as follows.
 ```bash
+$ yarn
 $ yarn start
 ```
 Then open http://localhost:3000/
@@ -30,10 +31,10 @@ import { wrapWatermark } from "r-watermark";
 
 class App extends Component<any, any> {
   render() {
-    const { style, children } = this.props;
+    const { children } = this.props;
 
     return (
-      <div style={style}>
+      <div>
         {children}
       </div>
     );
@@ -56,16 +57,8 @@ const texts = [
 ];
 
 const WithWatermark = wrapWatermark(
-  <App
-    style={{
-      width: "75vw",
-      minWidth: 1366,
-      maxWidth: 1600,
-      height: 700,
-      margin: "0 auto",
-    }}
-  >
-    <h2>Hello AppWithChildren</h2>
+  <App>
+    <h2 style={{ padding: 36 }}>Hello AppWithChildren</h2>
   </App>
 )({
   texts,
@@ -85,7 +78,7 @@ render(
 |---------|--------|-----------------------------|---------|
 | width   | number | SVG width                   | 180     |
 | height  | number | SVG height                  | 80      |
-| zIndex  | number | Container div style z-index | 9999    |
+| zIndex  | number | Container div style z-index | -1      |
 | opacity | number | Container div style opacity | .15     |
 | texts   | Text[] | Watermark texts             | []      |
 
