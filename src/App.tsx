@@ -41,7 +41,7 @@ const WithWatermark = wrapWatermark(
   </App>
 )({
   containerStyle: {
-    height: window.innerHeight - 220,
+    minHeight: window.innerHeight - 220,
   },
   texts,
 });

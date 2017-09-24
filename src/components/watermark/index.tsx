@@ -9,7 +9,7 @@ export interface Text {
   fontFamily?: string; // Text Font Family. Default as "monospace".
 }
 
-export interface ContainerStyle {
+export interface ContainerStyle extends CSSProperties {
   width?: number | string; // Container div style width. Default as "100%".
   height?: number | string; // Container div style height. Default as "100%".
   zIndex?: number; // Container div style z-index. Default as "0".
