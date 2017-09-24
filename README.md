@@ -61,6 +61,9 @@ const WithWatermark = wrapWatermark(
     <h2 style={{ padding: 36 }}>Hello AppWithChildren</h2>
   </App>
 )({
+  containerStyle: {
+    height: window.innerHeight - 220,
+  },
   texts,
 });
 
@@ -74,13 +77,22 @@ render(
 ## API
 - WatermarkProps
 
-| Prop    | Type   | Description                 | Default |
-|---------|--------|-----------------------------|---------|
-| width   | number | SVG width                   | 180     |
-| height  | number | SVG height                  | 80      |
-| zIndex  | number | Container div style z-index | -1      |
-| opacity | number | Container div style opacity | .15     |
-| texts   | Text[] | Watermark texts             | []      |
+| Prop           | Type           | Description                 | Default                                     |
+|----------------|----------------|-----------------------------|---------------------------------------------|
+| containerStyle | ContainerStyle | Container div style         | { width: "100%", height: "100%", zIndex: 0} |
+| width          | number         | SVG width                   | 180                                         |
+| height         | number         | SVG height                  | 80                                          |
+| zIndex         | number         | Watermark div style z-index | -1                                          |
+| opacity        | number         | Watermark div style opacity | .15                                         |
+| texts          | Text[]         | Watermark texts             | []                                          |
+
+- ContainerStyle
+
+| Prop   | Type            | Description                 | Default |
+|--------|-----------------|-----------------------------|---------|
+| width  | number | string | Container div style width   | 100%    |
+| height | number | string | Container div style height  | 100%    |
+| zIndex | number          | Container div style z-index | 0       |
 
 - Text
 

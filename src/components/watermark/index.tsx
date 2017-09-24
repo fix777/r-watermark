@@ -9,11 +9,18 @@ export interface Text {
   fontFamily?: string; // Text Font Family. Default as "monospace".
 }
 
+export interface ContainerStyle {
+  width?: number | string; // Container div style width. Default as "100%".
+  height?: number | string; // Container div style height. Default as "100%".
+  zIndex?: number; // Container div style z-index. Default as "0".
+}
+
 export interface WatermarkProps {
+  containerStyle?: ContainerStyle;
   width?: number; // SVG width. Default as "180"
   height?: number; // SVG height. Default as "80"
-  zIndex?: number; // Container div style z-index. Default as "9999".
-  opacity?: number; // Container div style opacity. Default as ".15".
+  zIndex?: number; // Watermark div style z-index. Default as "-1".
+  opacity?: number; // Watermark div style opacity. Default as ".15".
   texts: Text[];
 }
 
@@ -101,7 +108,7 @@ export class Watermark extends Component<WatermarkProps, WatermarkState> {
   }
 
   render() {
-    const { zIndex, opacity, children } = this.props;
+    const { containerStyle, zIndex, opacity, children } = this.props;
     const { bgImageUrl } = this.state;
 
     let styles: Partial<CSSProperties> = {
@@ -126,6 +133,7 @@ export class Watermark extends Component<WatermarkProps, WatermarkState> {
           width: "100%",
           height: "100%",
           zIndex: 0,
+          ...containerStyle,
         }}
       >
         {children}

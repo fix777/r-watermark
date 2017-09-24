@@ -40,6 +40,9 @@ const WithWatermark = wrapWatermark(
     <h2 style={{ padding: 36 }}>Hello AppWithChildren</h2>
   </App>
 )({
+  containerStyle: {
+    height: window.innerHeight - 220,
+  },
   texts,
 });
 
