@@ -1,4 +1,9 @@
-import React, { Component, cloneElement, CSSProperties } from "react";
+import React, {
+  Component,
+  cloneElement,
+  CSSProperties,
+  ReactNode,
+} from "react";
 
 export interface Text {
   translateX: number;
@@ -9,14 +14,7 @@ export interface Text {
   fontFamily?: string; // Text Font Family. Default as "monospace".
 }
 
-export interface ContainerStyle extends CSSProperties {
-  width?: number | string; // Container div style width. Default as "100%".
-  height?: number | string; // Container div style height. Default as "100%".
-  zIndex?: number; // Container div style z-index. Default as "0".
-}
-
 export interface WatermarkProps {
-  containerStyle?: ContainerStyle;
   width?: number; // SVG width. Default as "180"
   height?: number; // SVG height. Default as "80"
   zIndex?: number; // Watermark div style z-index. Default as "-1".
@@ -32,7 +30,7 @@ export class Watermark extends Component<WatermarkProps, WatermarkState> {
   static defaultProps: Partial<WatermarkProps> = {
     width: 180,
     height: 80,
-    zIndex: -1,
+    zIndex: 9999,
     opacity: 0.15,
     texts: [],
   };
@@ -108,7 +106,7 @@ export class Watermark extends Component<WatermarkProps, WatermarkState> {
   }
 
   render() {
-    const { containerStyle, zIndex, opacity, children } = this.props;
+    const { zIndex, opacity } = this.props;
     const { bgImageUrl } = this.state;
 
     let styles: Partial<CSSProperties> = {
@@ -119,6 +117,7 @@ export class Watermark extends Component<WatermarkProps, WatermarkState> {
       bottom: 0,
       width: "100%",
       height: "100%",
+      pointerEvents: "none",
       opacity,
       zIndex,
     };
@@ -126,33 +125,25 @@ export class Watermark extends Component<WatermarkProps, WatermarkState> {
       styles = { ...styles, backgroundImage: `url(${bgImageUrl})` };
     }
 
-    return (
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "100%",
-          zIndex: 0,
-          ...containerStyle,
-        }}
-      >
-        {children}
-        <div style={styles} />
-      </div>
-    );
+    return <div style={styles} />;
   }
 }
 
-export const wrapWatermark = (WrappedComponent: JSX.Element) => (
-  options: WatermarkProps
-) => (props: any) => {
-  const { children } = WrappedComponent.props;
-  const w = cloneElement(
-    <Watermark {...options} />,
-    null,
-    children,
-    props.children
-  );
-  const c = cloneElement(WrappedComponent, props, w);
-  return c;
-};
+export type BaseProps<P> = Readonly<{ children?: ReactNode }> & Readonly<P>;
+
+export function wrapWatermark<P>(WrappedComponent: JSX.Element) {
+  return (options: WatermarkProps) => (
+    props: BaseProps<P> & Readonly<{ style?: CSSProperties }>
+  ) => {
+    const { style, children } = WrappedComponent.props;
+    const newStyle = { ...style, ...props.style, position: "relative" };
+    const c = cloneElement(
+      WrappedComponent,
+      { ...props as any, style: newStyle },
+      children,
+      props.children,
+      <Watermark {...options} />
+    );
+    return c;
+  };
+}

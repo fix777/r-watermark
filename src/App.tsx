@@ -6,10 +6,10 @@ import { wrapWatermark } from "./components/watermark";
 
 class App extends Component<any, any> {
   render() {
-    const { children } = this.props;
+    const { style, children } = this.props;
 
     return (
-      <div className="App">
+      <div style={style} className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to RWatermark</h2>
@@ -40,9 +40,6 @@ const WithWatermark = wrapWatermark(
     <h2 style={{ padding: 36 }}>Hello AppWithChildren</h2>
   </App>
 )({
-  containerStyle: {
-    minHeight: window.innerHeight - 220,
-  },
   texts,
 });
 
