@@ -139,10 +139,13 @@ export function wrapWatermark<P>(WrappedComponent: JSX.Element) {
     const newStyle = { ...style, ...props.style, position: "relative" };
     const c = cloneElement(
       WrappedComponent,
-      { ...props as any, style: newStyle },
+      {
+        ...props as any,
+        style: newStyle,
+        watermark: <Watermark {...options} />,
+      },
       children,
-      props.children,
-      <Watermark {...options} />
+      props.children
     );
     return c;
   };

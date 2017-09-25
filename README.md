@@ -29,13 +29,18 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 import { wrapWatermark } from "r-watermark";
 
-class App extends Component<any, any> {
+export interface AppProps {
+  style?: CSSProperties;
+  watermark?: JSX.Element;
+}
+
+class App extends Component<AppProps> {
   render() {
-    const { children } = this.props;
+    const { style, watermark } = this.props;
 
     return (
-      <div>
-        {children}
+      <div style={style}>
+        {watermark}
       </div>
     );
   }
@@ -56,13 +61,7 @@ const texts = [
   },
 ];
 
-const WithWatermark = wrapWatermark(
-  <App>
-    <h2 style={{ padding: 36 }}>Hello AppWithChildren</h2>
-  </App>
-)({
-  texts,
-});
+const WithWatermark = wrapWatermark(<App/>)({ texts });
 
 render(
   <WithWatermark />,
@@ -78,8 +77,8 @@ render(
 |----------------|----------------|-----------------------------|---------------------------------------------|
 | width          | number         | SVG width                   | 180                                         |
 | height         | number         | SVG height                  | 80                                          |
-| zIndex         | number         | Watermark div style z-index | -1                                          |
-| opacity        | number         | Watermark div style opacity | .15                                         |
+| zIndex         | number         | Watermark div style z-index | 9999                                          |
+| opacity        | number         | Watermark div style opacity | 0.15                                         |
 | texts          | Text[]         | Watermark texts             | []                                          |
 
 - Text

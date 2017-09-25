@@ -1,15 +1,21 @@
-import React, { Component } from "react";
+import React, { Component, CSSProperties } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
 import { wrapWatermark } from "./components/watermark";
 
-class App extends Component<any, any> {
+export interface AppProps {
+  style?: CSSProperties;
+  watermark?: JSX.Element;
+}
+
+class App extends Component<AppProps> {
   render() {
-    const { style, children } = this.props;
+    const { style, watermark, children } = this.props;
 
     return (
       <div style={style} className="App">
+        {watermark}
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to RWatermark</h2>
@@ -37,7 +43,14 @@ const texts = [
 
 const WithWatermark = wrapWatermark(
   <App>
-    <h2 style={{ padding: 36 }}>Hello AppWithChildren</h2>
+    <h2 style={{ padding: 16 }}>Hello AppWithChildren</h2>
+    <div style={{ padding: 16 }}>
+      <input
+        style={{ height: 32, minWidth: 166 }}
+        type="text"
+        placeholder="AppWithChildren"
+      />
+    </div>
   </App>
 )({
   texts,
