@@ -33,7 +33,7 @@ module.exports = {
   entry: [paths.libIndexTsx],
   output: {
     // The build folder.
-    path: paths.lib,
+    path: paths.dist,
     filename: "index.js",
     library: "RWatermark",
     libraryTarget: "umd",
@@ -110,7 +110,7 @@ module.exports = {
               {
                 loader: require.resolve("ts-loader"),
                 options: {
-                  configFile: "tsconfig.lib.json",
+                  configFile: "tsconfig.dist.json",
                 },
               },
             ],
