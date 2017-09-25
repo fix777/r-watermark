@@ -1,9 +1,10 @@
 import React, {
   Component,
-  cloneElement,
+  createElement,
   CSSProperties,
-  ReactNode,
+  ComponentClass,
 } from "react";
+import hoistStatics from "hoist-non-react-statics";
 
 export interface Text {
   translateX: number;
@@ -129,24 +130,62 @@ export class Watermark extends Component<WatermarkProps, WatermarkState> {
   }
 }
 
-export type BaseProps<P> = Readonly<{ children?: ReactNode }> & Readonly<P>;
+// export type BaseProps<P> = Readonly<{ children?: ReactNode }> & Readonly<P>;
 
-export function wrapWatermark<P>(WrappedComponent: JSX.Element) {
-  return (options: WatermarkProps) => (
-    props: BaseProps<P> & Readonly<{ style?: CSSProperties }>
-  ) => {
-    const { style, children } = WrappedComponent.props;
-    const newStyle = { ...style, ...props.style, position: "relative" };
-    const c = cloneElement(
-      WrappedComponent,
-      {
-        ...props as any,
-        style: newStyle,
-        watermark: <Watermark {...options} />,
-      },
-      children,
-      props.children
-    );
-    return c;
+// export function wrapWatermark<P>(WrappedComponent: ComponentClass<P>) {
+//   return (options: WatermarkProps) => (
+//     props: BaseProps<P> & Readonly<{ style?: CSSProperties }>
+//   ) => {
+//     const e = <WrappedComponent />;
+//     const { style, children } = e.props;
+//     const newStyle = { ...style, ...props.style, position: "relative" };
+//     const c = cloneElement(
+//       e,
+//       {
+//         ...props as any,
+//         style: newStyle,
+//         watermark: <Watermark {...options} />,
+//       },
+//       children,
+//       props.children
+//     );
+//     return c;
+//   };
+// }
+
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName || WrappedComponent.name || "Component";
+}
+
+export interface WithWatermarkProps {
+  style: CSSProperties;
+  watermark: JSX.Element;
+}
+
+export function withWatermark<P>(options: WatermarkProps) {
+  const watermark = <Watermark {...options} />;
+
+  return function wrapWithWatermark(WrappedComponent: ComponentClass<P>) {
+    const withWatermarkDisplayName = `WithWatermark(${getDisplayName(
+      WrappedComponent
+    )})`;
+
+    // tslint:disable-next-line:max-classes-per-file
+    class WithWatermark extends Component<P, {}> {
+      render() {
+        const { style, ...rest } = this.props as any;
+        const newStyle: CSSProperties = { ...style, position: "relative" };
+        const mergedProps: P & WithWatermarkProps = {
+          ...rest,
+          style: newStyle,
+          watermark,
+        };
+        return createElement<P>(WrappedComponent, mergedProps);
+      }
+    }
+
+    (WithWatermark as ComponentClass<P>).displayName = withWatermarkDisplayName;
+
+    return hoistStatics(WithWatermark, WrappedComponent);
   };
 }

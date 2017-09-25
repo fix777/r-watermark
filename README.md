@@ -34,13 +34,34 @@ export interface AppProps {
   watermark?: JSX.Element;
 }
 
+
+const alertIt = () => alert("Here you go.");
+
 class App extends Component<AppProps> {
   render() {
     const { style, watermark } = this.props;
 
     return (
-      <div style={style}>
+      <div style={style} className="App">
         {watermark}
+        <div className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h2>Welcome to RWatermark</h2>
+        </div>
+        <div style={{ padding: 160 }}>
+          <button
+            style={{
+              height: 32,
+              minWidth: 100,
+              color: "white",
+              background: "skyblue",
+              border: 0,
+            }}
+            onClick={alertIt}
+          >
+            Hello App
+          </button>
+        </div>
       </div>
     );
   }
@@ -61,7 +82,7 @@ const texts = [
   },
 ];
 
-const WithWatermark = wrapWatermark(<App/>)({ texts });
+const WithWatermark = withWatermark<AppProps>({ texts })(App);
 
 render(
   <WithWatermark />,

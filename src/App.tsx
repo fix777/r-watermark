@@ -2,16 +2,18 @@ import React, { Component, CSSProperties } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
-import { wrapWatermark } from "./components/watermark";
+import { withWatermark } from "./components/watermark";
 
 export interface AppProps {
   style?: CSSProperties;
   watermark?: JSX.Element;
 }
 
+const alertIt = () => alert("Here you go.");
+
 class App extends Component<AppProps> {
   render() {
-    const { style, watermark, children } = this.props;
+    const { style, watermark } = this.props;
 
     return (
       <div style={style} className="App">
@@ -20,7 +22,20 @@ class App extends Component<AppProps> {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to RWatermark</h2>
         </div>
-        {children}
+        <div style={{ padding: 160 }}>
+          <button
+            style={{
+              height: 32,
+              minWidth: 100,
+              color: "white",
+              background: "skyblue",
+              border: 0,
+            }}
+            onClick={alertIt}
+          >
+            Hello App
+          </button>
+        </div>
       </div>
     );
   }
@@ -41,19 +56,6 @@ const texts = [
   },
 ];
 
-const WithWatermark = wrapWatermark(
-  <App>
-    <h2 style={{ padding: 16 }}>Hello AppWithChildren</h2>
-    <div style={{ padding: 16 }}>
-      <input
-        style={{ height: 32, minWidth: 166 }}
-        type="text"
-        placeholder="AppWithChildren"
-      />
-    </div>
-  </App>
-)({
-  texts,
-});
+const WithWatermark = withWatermark<AppProps>({ texts })(App);
 
 export default WithWatermark;
