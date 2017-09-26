@@ -33,7 +33,7 @@ module.exports = {
   entry: [paths.libIndexTsx],
   output: {
     // The build folder.
-    path: paths.dist,
+    path: paths.appLib,
     filename: "index.js",
     library: "RWatermark",
     libraryTarget: "umd",

@@ -9,13 +9,15 @@ process.on("unhandledRejection", err => {
   throw err;
 });
 
+const [env] = process.argv.slice(2);
+console.log("env: ", env);
+
 // Ensure environment variables are read.
 require("../config/env");
 
 const chalk = require("chalk");
 const fs = require("fs-extra");
 const webpack = require("webpack");
-const config = require("../config/webpack.config.prod");
 const paths = require("../config/paths");
 const checkRequiredFiles = require("react-dev-utils/checkRequiredFiles");
 const formatWebpackMessages = require("react-dev-utils/formatWebpackMessages");
@@ -35,13 +37,15 @@ if (!checkRequiredFiles([paths.libIndexTsx])) {
   process.exit(1);
 }
 
+const desDir = env == "lib" ? paths.appLib : paths.appDist;
+
 // First, read the current file sizes in build directory.
 // This lets us display how much they changed later.
-measureFileSizesBeforeBuild(paths.dist)
+measureFileSizesBeforeBuild(desDir)
   .then(previousFileSizes => {
     // Remove all content but keep the directory so that
     // if you're in it, you don't end up in Trash
-    fs.emptyDirSync(paths.dist);
+    fs.emptyDirSync(desDir);
     // Merge with the public folder
     // copyPublicFolder();
     // Start the webpack build
@@ -70,7 +74,7 @@ measureFileSizesBeforeBuild(paths.dist)
       printFileSizesAfterBuild(
         stats,
         previousFileSizes,
-        paths.dist,
+        desDir,
         WARN_AFTER_BUNDLE_GZIP_SIZE,
         WARN_AFTER_CHUNK_GZIP_SIZE
       );
@@ -87,7 +91,7 @@ measureFileSizesBeforeBuild(paths.dist)
 function build(previousFileSizes) {
   console.log("Creating an optimized production build...");
 
-  let compiler = webpack(config);
+  let compiler = webpack(require(`../config/webpack.config.${env}`));
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
       if (err) {

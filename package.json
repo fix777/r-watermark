@@ -1,8 +1,8 @@
 {
   "name": "r-watermark",
   "version": "0.1.7",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "author": "fix777 <wangguoguo.lan@gmail.com>",
   "license": "MIT",
   "repository": {
@@ -22,7 +22,10 @@
     "babel-eslint": "7.2.3",
     "babel-jest": "20.0.3",
     "babel-loader": "7.1.1",
-    "babel-preset-react-app": "^3.0.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "babel-runtime": "6.26.0",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
     "chalk": "1.1.3",
@@ -63,9 +66,10 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "lib": "node scripts/build.js lib",
+    "dist": "node scripts/build.js dist",
     "test": "node scripts/test.js --env=jsdom",
-    "prepublish": "yarn build"
+    "prepublish": "yarn lib && yarn dist"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -102,7 +106,12 @@
   },
   "babel": {
     "presets": [
-      "react-app"
+      "react",
+      "es2015"
+    ],
+    "plugins": [
+      "transform-class-properties",
+      "transform-object-rest-spread"
     ]
   },
   "eslintConfig": {
