@@ -17,7 +17,7 @@ export interface WithWatermarkProps {
   watermark: JSX.Element;
 }
 
-export function withWatermark<P>(options: WatermarkProps) {
+export default function withWatermark<P>(options: WatermarkProps) {
   const watermark = <Watermark {...options} />;
 
   return function wrapWithWatermark(WrappedComponent: ComponentClass<P>) {
