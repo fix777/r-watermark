@@ -3,6 +3,10 @@
   "version": "0.1.9",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "keywords": [
+    "react",
+    "watermark"
+  ],
   "author": "fix777 <wangguoguo.lan@gmail.com>",
   "license": "MIT",
   "repository": {
