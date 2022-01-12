@@ -1,3 +1,7 @@
+# [DEPRECATION WARNING]
+
+It was deprecated and moved to [@galiojs/react-watermark](https://github.com/galiojs/react-watermark)
+
 # r-watermark
 
 [![npm version](https://img.shields.io/npm/v/r-watermark.svg?style=flat-square)](https://www.npmjs.org/package/r-watermark)
